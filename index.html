@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cubo Interativo 3D</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #1a1a2e;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        h1 {
+            color: #ff6b6b;
+            margin-bottom: 10px;
+        }
+        p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cubo Interativo 3D</h1>
+    <p>Mova o mouse para controlar a rotação do cubo</p>
+    <p>O cubo gira automaticamente e muda de cor</p>
+
+    <script>
+        let rotacaoX = 0;
+        let rotacaoY = 0;
+
+        function setup() {
+            createCanvas(800, 600, WEBGL);
+        }
+
+        function draw() {
+            background(30, 30, 60);
+            
+            // Iluminação simples
+            ambientLight(100);
+            directionalLight(255, 255, 255, -1, 0.5, -1);
+            
+            // Rotação automática
+            rotacaoX += 0.01;
+            rotacaoY += 0.005;
+            
+            // Interação com mouse
+            let mouseRotX = map(mouseY, 0, height, -PI, PI);
+            let mouseRotY = map(mouseX, 0, width, -PI, PI);
+            
+            // Aplicar transformações
+            push();
+            translate(0, 0, 0);
+            rotateX(rotacaoX + mouseRotX * 0.3);
+            rotateY(rotacaoY + mouseRotY * 0.3);
+            
+            // Material com cor que muda com o tempo
+            let r = map(sin(frameCount * 0.02), -1, 1, 100, 255);
+            let g = map(cos(frameCount * 0.03), -1, 1, 100, 255);
+            let b = map(sin(frameCount * 0.025), -1, 1, 100, 255);
+            
+            ambientMaterial(r, g, b);
+            
+            // Desenhar o cubo
+            box(150);
+            
+            pop();
+        }
+    </script>
+</body>
+</html>
